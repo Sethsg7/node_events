@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Newsletter Signup</title>
+  </head>
+  <body>
+    <h1>Newsletter Signup</h1>
+    <p id="feedback"></p>
+    <form>
+      <div>
+        <label for="name">Name</label
+        ><input type="text" id="name" name="name" />
+      </div>
+      <div>
+        <label for="email">Email</label
+        ><input type="text" id="email" name="email" />
+      </div>
+      <div><button type="submit">Signup</button></div>
+    </form>
+
+    <script>
+      let form = document.querySelector("form");
+      let name = document.querySelector("#name");
+      let email = document.querySelector("#email");
+      let feedback = document.querySelector("#feedback");
+
+      form.addEventListener("submit", (e) => {
+        e.preventDefault();
+
+        feedback.textContent = "";
+
+        fetch("/newsletter_signup", {
+          method: "POST",
+          body: JSON.stringify({ name: name.value, email: email.value }),
+        }).then(res => res.json()).then(data => {
+            name.value = "";
+            email.value = "";
+            feedback.textContent = data.msg;
+        }).catch((err) => {
+            console.error(err);
+            feedback.textContent = "Failed to signup."
+        });
+      });
+    </script>
+  </body>
+</html>

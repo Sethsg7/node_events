@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Newsletter List</title>
+  </head>
+  <body>
+    <h1>Newsletter</h1>
+    <table>
+      <thead>
+        <tr>
+          <th>Name</th>
+          <th>Email</th>
+        </tr>
+      </thead>
+      <tbody></tbody>
+    </table>
+
+    <script>
+      let tbody = document.querySelector("tbody");
+      fetch("/api/newsletter")
+        .then((res) => res.json())
+        .then((data) => {
+          console.log(data);
+          for (let record of data) {
+            
+            let tr = document.createElement("tr");
+            let name = document.createElement("td");
+            let email = document.createElement("td");
+            console.log(record.email);
+            name.textContent = record.name;
+            email.textContent = record.email;
+            tr.append(name, email);
+            tbody.appendChild(tr);
+          }
+        })
+        .catch((err) => {
+          console.error(err);
+          let tr = document.createElement("tr");
+          let td = document.createElement("td");
+          td.textContent = "Failed to load data.";
+          tr.appendChild(td);
+          tbody.appendChild(tr);
+        });
+    </script>
+  </body>
+</html>
